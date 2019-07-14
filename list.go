@@ -54,14 +54,20 @@ func (self * List_t) PushBack(value interface{}) {
 	self.size++
 }
 
-func (self * List_t) PopFront() (interface {}) {
+func (self * List_t) PopFront() (interface {}, bool) {
+	if self.size == 0 {
+		return nil, false
+	}
 	self.size--
-	return cut_list(self.next).Value
+	return cut_list(self.next).Value, true
 }
 
-func (self * List_t) PopBack() (interface {}) {
+func (self * List_t) PopBack() (interface {}, bool) {
+	if self.size == 0 {
+		return nil, false
+	}
 	self.size--
-	return cut_list(self.prev).Value
+	return cut_list(self.prev).Value, true
 }
 
 func (self * List_t) Front() * List_t {
