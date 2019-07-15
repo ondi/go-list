@@ -44,14 +44,16 @@ func set_after(it * List_t, at * List_t) * List_t {
 	return it
 }
 
-func (self * List_t) PushFront(value interface{}) {
+func (self * List_t) PushFront(value interface{}) bool {
 	set_after(&List_t{Value: value}, self)
 	self.size++
+	return true
 }
 
-func (self * List_t) PushBack(value interface{}) {
+func (self * List_t) PushBack(value interface{}) bool {
 	set_before(&List_t{Value: value}, self)
 	self.size++
+	return true
 }
 
 func (self * List_t) PopFront() (interface {}, bool) {
