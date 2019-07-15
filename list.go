@@ -15,7 +15,7 @@ type Less_t interface {
 	Less(a interface{}, b interface{}) bool
 }
 
-func New() (self * List_t) {
+func New(...int) (self * List_t) {
 	self = &List_t{}
 	self.prev = self
 	self.next = self
