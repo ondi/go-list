@@ -94,7 +94,7 @@ func (self * List_t) Size() int {
 }
 
 // takes linear time if sorted before
-func (self * List_t) InsertionSortFront(cmp CmpLess) {
+func (self * List_t) InsertionSortFront(cmp Compare) {
 	for it1 := self.Front().Next(); it1 != self.End(); it1 = it1.Next() {
 		for it2 := it1; it2.Prev() != self.End() && cmp.Less(it2.Value, it2.Prev().Value); {
 			set_before(cut_list(it2), it2.Prev())
@@ -103,7 +103,7 @@ func (self * List_t) InsertionSortFront(cmp CmpLess) {
 }
 
 // takes linear time if sorted before
-func (self * List_t) InsertionSortBack(cmp CmpLess) {
+func (self * List_t) InsertionSortBack(cmp Compare) {
 	for it1 := self.Back().Prev(); it1 != self.End(); it1 = it1.Prev() {
 		for it2 := it1; it2.Next() != self.End() && cmp.Less(it2.Value, it2.Next().Value); {
 			set_after(cut_list(it2), it2.Next())
@@ -111,18 +111,18 @@ func (self * List_t) InsertionSortBack(cmp CmpLess) {
 	}
 }
 
-type CmpLess interface {
+type Compare interface {
 	Less(a interface{}, b interface{}) bool
 }
 
 type reverse_t struct {
-	CmpLess
+	Compare
 }
 
 func (self * reverse_t) Less(a interface{}, b interface{}) bool {
 	return self.Less(b, a)
 }
 
-func Reverse(cmp CmpLess) CmpLess {
+func Reverse(cmp Compare) Compare {
 	return &reverse_t{cmp}
 }
