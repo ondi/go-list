@@ -11,10 +11,7 @@ type List_t struct {
 	size int
 }
 
-type Less_t interface {
-	Less(a interface{}, b interface{}) bool
-}
-
+// for compatibility with go-circular
 func New(...int) (self * List_t) {
 	self = &List_t{}
 	self.prev = self
@@ -97,31 +94,35 @@ func (self * List_t) Size() int {
 }
 
 // takes linear time if sorted before
-func (self * List_t) InsertionSortFront(less Less_t) {
+func (self * List_t) InsertionSortFront(cmp Compare) {
 	for it1 := self.Front().Next(); it1 != self.End(); it1 = it1.Next() {
-		for it2 := it1; it2.Prev() != self.End() && less.Less(it2.Value, it2.Prev().Value); {
+		for it2 := it1; it2.Prev() != self.End() && cmp.Less(it2.Value, it2.Prev().Value); {
 			set_before(cut_list(it2), it2.Prev())
 		}
 	}
 }
 
 // takes linear time if sorted before
-func (self * List_t) InsertionSortBack(less Less_t) {
+func (self * List_t) InsertionSortBack(cmp Compare) {
 	for it1 := self.Back().Prev(); it1 != self.End(); it1 = it1.Prev() {
-		for it2 := it1; it2.Next() != self.End() && less.Less(it2.Value, it2.Next().Value); {
+		for it2 := it1; it2.Next() != self.End() && cmp.Less(it2.Value, it2.Next().Value); {
 			set_after(cut_list(it2), it2.Next())
 		}
 	}
 }
 
+type Compare interface {
+	Less(a interface{}, b interface{}) bool
+}
+
 type reverse_t struct {
-	Less_t
+	Compare
 }
 
 func (self * reverse_t) Less(a interface{}, b interface{}) bool {
-	return self.Less_t.Less(b, a)
+	return self.Compare.Less(b, a)
 }
 
-func Reverse(less Less_t) Less_t {
+func Reverse(less Compare) Compare {
 	return &reverse_t{less}
 }
