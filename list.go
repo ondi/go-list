@@ -93,6 +93,22 @@ func (self * List_t) Size() int {
 	return self.size
 }
 
+func (self * List_t) RangeFront(f func(interface{}) bool) {
+	for it := self.Front(); it != self.End(); it = it.Next() {
+		if f(it.Value) == false {
+			return
+		}
+	}
+}
+
+func (self * List_t) RangeBack(f func(interface{}) bool) {
+	for it := self.Back(); it != self.End(); it = it.Prev() {
+		if f(it.Value) == false {
+			return
+		}
+	}
+}
+
 // takes linear time if sorted before
 func (self * List_t) InsertionSortFront(cmp Compare) {
 	for it1 := self.Front().Next(); it1 != self.End(); it1 = it1.Next() {

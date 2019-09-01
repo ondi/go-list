@@ -10,9 +10,10 @@ func ExampleList1() {
 	l.PushBack("aaaaa")
 	l.PushFront("bbbbb")
 	
-	for it := l.Front(); it != l.End(); it = it.Next() {
-		fmt.Printf("%v\n", it.Value)
-	}
+	l.RangeFront(func(v interface{}) bool {
+		fmt.Printf("%v\n", v)
+		return true
+	})
 	fmt.Printf("%v\n", l.Size())
 /* Output:
 bbbbb
@@ -37,9 +38,10 @@ func ExampleList2() {
 	l.PushFront("bbbbb")
 	
 	l.InsertionSortFront(MyLess_t{})
-	for it := l.Front(); it != l.End(); it = it.Next() {
-		fmt.Printf("%v\n", it.Value)
-	}
+	l.RangeFront(func(v interface{}) bool {
+		fmt.Printf("%v\n", v)
+		return true
+	})
 	fmt.Printf("%v\n", l.Size())
 /* Output:
 aaaaa
@@ -58,15 +60,60 @@ func ExampleList3() {
 	l.PushFront("bbbbb")
 	
 	l.InsertionSortBack(MyLess_t{})
-	for it := l.Front(); it != l.End(); it = it.Next() {
-		fmt.Printf("%v\n", it.Value)
-	}
+	l.RangeFront(func(v interface{}) bool {
+		fmt.Printf("%v\n", v)
+		return true
+	})
 	fmt.Printf("%v\n", l.Size())
 /* Output:
 ddddd
 ccccc
 bbbbb
 aaaaa
+4
+*/
+}
+
+func ExampleList4() {
+	l := New()
+	l.PushBack("ddddd")
+	l.PushFront("ccccc")
+	l.PushBack("aaaaa")
+	l.PushFront("bbbbb")
+	
+	l.InsertionSortFront(MyLess_t{})
+	l.RangeBack(func(v interface{}) bool {
+		fmt.Printf("%v\n", v)
+		return true
+	})
+	fmt.Printf("%v\n", l.Size())
+/* Output:
+ddddd
+ccccc
+bbbbb
+aaaaa
+4
+*/
+}
+
+func ExampleList5() {
+	l := New()
+	l.PushBack("ddddd")
+	l.PushFront("ccccc")
+	l.PushBack("aaaaa")
+	l.PushFront("bbbbb")
+	
+	l.InsertionSortBack(MyLess_t{})
+	l.RangeBack(func(v interface{}) bool {
+		fmt.Printf("%v\n", v)
+		return true
+	})
+	fmt.Printf("%v\n", l.Size())
+/* Output:
+aaaaa
+bbbbb
+ccccc
+ddddd
 4
 */
 }
